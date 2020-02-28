@@ -24,10 +24,10 @@ let fakeServerData = {
         name: 'Discover Weekly',
         songs: [
 					{name: 'Rari', duration: 20000},
-          {name: 'Speaking Sonar', duration: 30000},
-          {name: 'Carefree', duration: 30000},
-          {name: 'Childism', duration: 40000}, 
-          {name: 'Loose Ends', duration: 30000}
+					{name: 'Speaking Sonar', duration: 30000},
+					{name: 'Carefree', duration: 30000},
+					{name: 'Childism', duration: 40000},
+					{name: 'Loose Ends', duration: 30000}
         ]
       },
       {
@@ -41,7 +41,7 @@ let fakeServerData = {
         ]
       },
       {
-        name: 'Recently Played' ,
+        name: 'Recently Played',
         songs: [
 					{name: 'Chewing Gum', duration: 20000},
        	  {name: 'Cooks', duration: 30000},
@@ -57,7 +57,7 @@ let fakeServerData = {
 class PlaylistCounter extends Component {
   render() {
     return (
-      <div style={{...defaultStyle, width: '40%', display: 'inline-block', 'font-size': '22px'}}>
+      <div style={{...defaultStyle, width: '40%', display: 'inline-block', fontSize: '22px'}}>
         <h2>{this.props.playlists.length} Playlists</h2>
       </div>
     );
@@ -74,7 +74,7 @@ class HoursCounter extends Component {
 		}, 0)
 
 		return (
-			<div style={{...defaultStyle, width: '40%', display: 'inline-block', 'font-size': '22px'}}>
+			<div style={{...defaultStyle, width: '40%', display: 'inline-block', fontSize: '22px'}}>
 				<h2>{Math.round(totalDuration/1000)} Hours</h2>
 			</div>
     );
@@ -84,8 +84,10 @@ class HoursCounter extends Component {
 class Filter extends Component {
   render() {
     return (
-      <div>
-				<input type="text"/>
+      <div style={defaultStyle}>
+				<img/>
+				<input type="text" onKeyUp={event => 
+					this.props.onTextChange(event.target.value)}/>
       </div>
     );
   }
@@ -96,8 +98,7 @@ class Playlist extends Component {
 		let playlist = this.props.playlist
     return (
       <div style={{...defaultStyle, width: '25%', display: 'inline-block', margin: '10px'}}>
-        <img alt=" "/>
-        <h3 style={{...defaultStyle, 'font-size': '22px'}}>{playlist.name}</h3>
+        <h3 style={{...defaultStyle, fontSize: '22px'}}>{playlist.name}</h3>
         <ul>
 					{playlist.songs.map(song =>
 						<li>{song.name}</li>
@@ -113,13 +114,19 @@ class Playlist extends Component {
 class App extends Component {
   constructor() {
     super();
-    this.state = {serverData: {}}
+    this.state = {
+			serverData: {},
+			filterString: ''
+		}
   }
 
   componentDidMount() {
     setTimeout(() => {
     this.setState({serverData: fakeServerData});
     }, 1000);
+    setTimeout(() => {
+    this.setState({filterString: ''});
+    }, 2000);
   }
 
 	// boolean amppecent operator
@@ -138,13 +145,18 @@ class App extends Component {
       <div className="App">
         {this.state.serverData.user ?
         <div>
-          <h1 style={{...defaultStyle, 'font-size': '54px'}}>
+          <h1 style={{...defaultStyle, fontSize: '54px'}}>
             {this.state.serverData.user.name}'s Playlists
           </h1>
           <PlaylistCounter playlists={this.state.serverData.user.playlists}/>
           <HoursCounter playlists={this.state.serverData.user.playlists}/>
-  			  <Filter/>
-					{this.state.serverData.user.playlists.map(playlist =>
+  			  <Filter onTextChange={text => {
+							this.setState({filterString: text})
+						}}/>				
+					{this.state.serverData.user.playlists.filter(playlist =>
+						playlist.name.toLowerCase().includes(
+						this.state.filterString.toLowerCase())
+					).map(playlist =>
 						<Playlist playlist={playlist} />
 					)}
 				</div> : <h1 style={defaultStyle}>Loading...</h1>
