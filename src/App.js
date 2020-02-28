@@ -124,9 +124,6 @@ class App extends Component {
     setTimeout(() => {
     this.setState({serverData: fakeServerData});
     }, 1000);
-    setTimeout(() => {
-    this.setState({filterString: ''});
-    }, 2000);
   }
 
 	// boolean amppecent operator
