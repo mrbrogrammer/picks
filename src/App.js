@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
+import queryString from 'query-string' ;
 
 let defaultStyle = {
   color: '#fff'
 };
 
-// declared variable, has a user that holds parameter (name)
+/* declared variable, has a user that holds parameter (name) */
 let fakeServerData = {
   user: {
     name: 'Luka',
@@ -18,36 +19,6 @@ let fakeServerData = {
 					{name: 'Nights', duration: 40000}, 
          	{name: 'Herside Story', duration: 30000},
           {name: 'Dark & Handsome', duration: 20000}
-        ]
-      },
-      {
-        name: 'Discover Weekly',
-        songs: [
-					{name: 'Rari', duration: 20000},
-					{name: 'Speaking Sonar', duration: 30000},
-					{name: 'Carefree', duration: 30000},
-					{name: 'Childism', duration: 40000},
-					{name: 'Loose Ends', duration: 30000}
-        ]
-      },
-      {
-        name: 'Daily Mix',
-        songs: [
-					{name: 'Bliss City', duration: 30000},
-          {name: 'Tadow', duration: 50000},
-          {name: 'Drift', duration: 40000}, 
-          {name: 'I Want You Around', duration: 30000},
-          {name: 'Faces + Places', duration: 40000}
-        ]
-      },
-      {
-        name: 'Recently Played',
-        songs: [
-					{name: 'Chewing Gum', duration: 20000},
-       	  {name: 'Cooks', duration: 30000},
-     	    {name: 'Free Spirit', duration: 40000},
-          {name: 'CPR', duration: 30000},
-          {name: 'Vent', duration: 30000}
         ]
       },
     ]
@@ -85,7 +56,7 @@ class Filter extends Component {
   render() {
     return (
       <div style={defaultStyle}>
-				<img/>
+				<img alt=""/>
 				<input type="text" onKeyUp={event => 
 					this.props.onTextChange(event.target.value)}/>
       </div>
@@ -98,6 +69,7 @@ class Playlist extends Component {
 		let playlist = this.props.playlist
     return (
       <div style={{...defaultStyle, width: '25%', display: 'inline-block', margin: '10px'}}>
+        <img src={playlist.imageUrl} alt="" style={{width: '160px'}}/>
         <h3 style={{...defaultStyle, fontSize: '22px'}}>{playlist.name}</h3>
         <ul>
 					{playlist.songs.map(song =>
@@ -121,12 +93,39 @@ class App extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-    this.setState({serverData: fakeServerData});
-    }, 1000);
+    let parsed = queryString.parse(window.location.search);
+    let accessToken = parsed.access_token;
+    
+    fetch('https://api.spotify.com/v1/me', {
+      headers: {'Authorization': 'Bearer ' + accessToken}
+    }).then((response) => response.json())
+    .then(data => this.setState({
+      user: {
+        name: data.display_name
+      }
+    }))
+    
+    fetch('https://api.spotify.com/v1/me/playlists', {
+      headers: {'Authorization': 'Bearer ' + accessToken}
+    }).then((response) => response.json())
+    .then(data => this.setState({
+      playlists: data.items.map(item => {
+        console.log(data.items)
+        return {
+          name: item.name,
+          imageUrl: item.images.find(image => image.width = 60).url,
+          songs: []
+        }
+      })
+    }))
   }
 
-	// boolean amppecent operator
+  /* when you using the arrow function like this and you returning an 
+   * object literall, the javascript intepretor gets confused because
+   * it doesn't know if you want to start the arrow with multipule lines
+   * or you trying to return an object. + parens around the curlys
+  */
+	/* boolean amppecent operator */
 
   render() {
 		/*
@@ -136,36 +135,42 @@ class App extends Component {
 		*		playlistElements.push(<Playlist playlist={playlist} />) 
 		*	)
 	 	* } 
-		*/
+    */
+    let playlistToRender =
+      this.state.user && 
+      this.state.playlists 
+      ? this.state.playlists.filter(playlist =>
+        playlist.name.toLowerCase().includes(
+          this.state.filterString.toLowerCase()))
+      : []
 
     return (
       <div className="App">
-        {this.state.serverData.user ?
+        {this.state.user ?
         <div>
           <h1 style={{...defaultStyle, fontSize: '54px'}}>
-            {this.state.serverData.user.name}'s Playlists
+            {this.state.user.name}'s Playlists
           </h1>
-          <PlaylistCounter playlists={this.state.serverData.user.playlists}/>
-          <HoursCounter playlists={this.state.serverData.user.playlists}/>
-  			  <Filter onTextChange={text => {
-							this.setState({filterString: text})
-						}}/>				
-					{this.state.serverData.user.playlists.filter(playlist =>
-						playlist.name.toLowerCase().includes(
-						this.state.filterString.toLowerCase())
-					).map(playlist =>
-						<Playlist playlist={playlist} />
-					)}
-				</div> : <h1 style={defaultStyle}>Loading...</h1>
-				} 
-    	</div>
+          <PlaylistCounter playlists={playlistToRender}/>
+          <HoursCounter playlists={playlistToRender}/>
+          <Filter onTextChange={text => {
+              this.setState({filterString: text})
+            }}/>			
+          {playlistToRender.map(playlist =>
+            <Playlist playlist={playlist} />
+          )}
+        </div> : <button onClick={() => window.location='https://picksbackend.herokuapp/login'} 
+          style={{padding: '20px', fontSize: '58px', marginTop: '20px'}}>Sign in with Spotify</button>
+        } 
+      </div>
     );
   }
 /* we are call the class "Plays" into the main render */
 }
 
 
-					/*	{this.state.serverData.user.playlists.map(playlist =>
-						<Playlist name={playlist.name} />
-					)} this map() does the same function as the for loop */
+/* {this.state.serverData.user.playlists.map(playlist =>
+ * <Playlist name={playlist.name} />
+ * )} this map() does the same function as the for loop 
+ */
 export default App;
