@@ -7,23 +7,6 @@ let defaultStyle = {
 };
 
 /* declared variable, has a user that holds parameter (name) */
-let fakeServerData = {
-  user: {
-    name: 'Luka',
-    playlists: [
-      {
-        name: 'Liked Songs',
-        songs: [
-          {name: 'Lucky', duration: 30000},
-					{name: 'Caged Bird', duration: 30000},
-					{name: 'Nights', duration: 40000}, 
-         	{name: 'Herside Story', duration: 30000},
-          {name: 'Dark & Handsome', duration: 20000}
-        ]
-      },
-    ]
-  }
-};
 
 class PlaylistCounter extends Component {
   render() {
@@ -95,6 +78,8 @@ class App extends Component {
   componentDidMount() {
     let parsed = queryString.parse(window.location.search);
     let accessToken = parsed.access_token;
+    if (!accessToken)
+      return;
     
     fetch('https://api.spotify.com/v1/me', {
       headers: {'Authorization': 'Bearer ' + accessToken}
@@ -110,7 +95,6 @@ class App extends Component {
     }).then((response) => response.json())
     .then(data => this.setState({
       playlists: data.items.map(item => {
-        console.log(data.items)
         return {
           name: item.name,
           imageUrl: item.images.find(image => image.width = 60).url,
@@ -159,7 +143,7 @@ class App extends Component {
           {playlistToRender.map(playlist =>
             <Playlist playlist={playlist} />
           )}
-        </div> : <button onClick={() => window.location='https://picksbackend.herokuapp/login'} 
+        </div> : <button onClick={() => window.location='https://picksbackend.herokuapp.com/login'} 
           style={{padding: '20px', fontSize: '58px', marginTop: '20px'}}>Sign in with Spotify</button>
         } 
       </div>
