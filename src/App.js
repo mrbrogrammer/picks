@@ -83,26 +83,49 @@ class App extends Component {
     fetch('https://api.spotify.com/v1/me', {
       headers: {'Authorization': 'Bearer ' + accessToken}
     }).then((response) => response.json())
+
     .then(data => this.setState({
       user: {
         name: data.display_name
       }
     }))
-    
+
     fetch('https://api.spotify.com/v1/me/playlists', {
       headers: {'Authorization': 'Bearer ' + accessToken}
     }).then((response) => response.json())
-    .then(data => this.setState({
-      playlists: data.items.map(item => {
+    .then(playlistData => {
+      let playlists = playlistData.items
+      let trackDataPromises = playlists.map(playlist => {
+        let responsePromise = fetch(playlist.tracks.href, {
+          headers: {'Authorization': 'Bearer ' + accessToken}
+        })
+        let trackDataPromise = responsePromise
+          .then(response => response.json())
+        return trackDataPromise
+      })
+      let allTracksDataPromises = Promise.all(trackDataPromises)
+      let playlistsPromise = allTracksDataPromises.then(trackDatas => {
+        trackDatas.forEach((trackData, i) => {
+          playlists[i].trackDatas = trackData.item
+          .map(item => item.track)
+        })
+        return playlists
+      })
+      return playlistsPromise
+    })
+    .then(playlists => this.setState({
+      playlists: playlists.map(item => {
         return {
           name: item.name,
           imageUrl: item.images.find(image => image.width = 60).url,
-          songs: []
+          songs: item.trackDatas.map(trackData => ({
+            name: trackData.name.slice(0,3),
+            duration: trackData.duration_ms / 1000
+          }))
         }
-      })
+    })
     }))
   }
-
   /* when you using the arrow function like this and you returning an 
    * object literall, the javascript intepretor gets confused because
    * it doesn't know if you want to start the arrow with multipule lines
