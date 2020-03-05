@@ -80,7 +80,6 @@ class App extends Component {
     let accessToken = parsed.access_token;
     if (!accessToken)
       return;
-    
     fetch('https://api.spotify.com/v1/me', {
       headers: {'Authorization': 'Bearer ' + accessToken}
     }).then((response) => response.json())
