@@ -108,6 +108,10 @@ class App extends Component {
         trackDatas.forEach((trackData, i) => {
           playlists[i].trackDatas = trackData.item
           .map(item => item.track)
+          .map(trackData => ({
+            name: trackData.name,
+            duration: trackData.duration_ms / 1000
+          }))
         })
         return playlists
       })
