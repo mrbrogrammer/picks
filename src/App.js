@@ -92,7 +92,7 @@ class App extends Component {
 
     fetch('https://api.spotify.com/v1/me/playlists', {
       headers: {'Authorization': 'Bearer ' + accessToken}
-    }).then((response) => response.json())
+    }).then(response => response.json())
     .then(playlistData => {
       let playlists = playlistData.items
       let trackDataPromises = playlists.map(playlist => {
@@ -103,7 +103,8 @@ class App extends Component {
           .then(response => response.json())
         return trackDataPromise
       })
-      let allTracksDataPromises = Promise.all(trackDataPromises)
+      let allTracksDataPromises = 
+        Promise.all(trackDataPromises)
       let playlistsPromise = allTracksDataPromises.then(trackDatas => {
         trackDatas.forEach((trackData, i) => {
           playlists[i].trackDatas = trackData.item
