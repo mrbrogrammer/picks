@@ -107,7 +107,7 @@ class App extends Component {
         Promise.all(trackDataPromises)
       let playlistsPromise = allTracksDataPromises.then(trackDatas => {
         trackDatas.forEach((trackData, i) => {
-          playlists[i].trackDatas = trackData.item
+          playlists[i].trackDatas = trackData.items
           .map(item => item.track)
           .map(trackData => ({
             name: trackData.name,
