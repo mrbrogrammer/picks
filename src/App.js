@@ -124,8 +124,7 @@ class App extends Component {
           name: item.name,
           imageUrl: item.images.find(image => image.width = 60).url,
           songs: item.trackDatas.map(trackData => ({
-            name: trackData.name.slice(0,3),
-            duration: trackData.duration_ms / 1000
+            name: item.trackDatas.slice(0,3)
           }))
         }
     })
