@@ -6,8 +6,6 @@ let defaultStyle = {
   color: '#fff'
 };
 
-/* declared variable, has a user that holds parameter (name) */
-
 class PlaylistCounter extends Component {
   render() {
     return (
@@ -20,17 +18,17 @@ class PlaylistCounter extends Component {
 
 class HoursCounter extends Component {
   render() {
-		let allSongs = this.props.playlists.reduce((songs, eachPlaylist) => {
-			return songs.concat(eachPlaylist.songs)
-		}, [])
-		let totalDuration  = allSongs.reduce((sum, eachSong) => {
-			return sum + eachSong.duration
-		}, 0)
-
-		return (
-			<div style={{...defaultStyle, width: '40%', display: 'inline-block', fontSize: '22px'}}>
-				<h2>{Math.round(totalDuration/1000)} Hours</h2>
-			</div>
+    let allSongs = this.props.playlists.reduce((songs, eachPlaylist) => {
+      return songs.concat(eachPlaylist.songs)
+    }, [])
+    let totalDuration  = allSongs.reduce((sum, eachSong) => {
+      return sum + eachSong.duration
+    }, 0)
+    
+    return (
+      <div style={{...defaultStyle, width: '40%', display: 'inline-block', fontSize: '22px'}}>
+        <h2>{Math.round(totalDuration/1000)} Hours</h2>
+      </div>
     );
   }
 }
@@ -124,7 +122,7 @@ class App extends Component {
           name: item.name,
           imageUrl: item.images.find(image => image.width = 60).url,
           songs: item.trackDatas.map(trackData => ({
-            name: trackData.name.slice(0,3),
+            name: item.trackDatas.slice(0,3),
             duration: trackData.duration_ms / 1000
           }))
         }
