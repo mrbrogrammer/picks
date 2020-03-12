@@ -2,6 +2,20 @@ import React, { Component } from 'react';
 import './App.css';
 import queryString from 'query-string' ;
 
+let signInButton= {
+	width: '500px',
+  padding: '10px 20px',
+  backgroundColor: '#4C4CFF',
+  color: '#fff',
+  border: 'none',
+  'borderRadius': '2px'
+};
+
+let defaultParagraph = {
+	fontSize: '0.8rem',
+	textAlign: 'left'
+};
+
 let defaultStyle = {
   color: '#fff'
 };
@@ -170,12 +184,20 @@ class App extends Component {
           {playlistToRender.map(playlist =>
             <Playlist playlist={playlist} />
           )}
-        </div> : <button onClick={() => { 
+        </div> 
+				:	<div style={{marginLeft: '32%', marginRight:'32%'}}>
+						 
+						<p style={{...defaultParagraph}}>
+							BetterPicks is a webapp that displays all your Spotify playlists.<br/>
+							For the app to work effectively,
+							the user should already have a Spotify account set up with desired playlist.</p> 
+						<button onClick={() => { 
             window.location = window.location.href.includes('localhost') 
               ? 'https://localhost:8888/login' 
               : 'https://picksbackend.herokuapp.com/login'}
-        }
-          style={{padding: '20px', fontSize: '58px', marginTop: '20px'}}>Sign in with Spotify</button>
+        	}
+          style={{...signInButton, fontSize: '28px', marginTop: '20px'}}>Sign in with Spotify
+					</button></div>
         } 
       </div>
     );
