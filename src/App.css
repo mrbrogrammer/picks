@@ -1,5 +1,6 @@
 html, body {
-  background-color: #fff;
+  background-color: #56AE4C;
+	font-family: 'Karla'
 }
 
 .App {
@@ -16,7 +17,11 @@ html, body {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+@media (width: 320px) {
+	.signInButton {
+		width: 200px;	
+	}
+}
 .App-header {
   background-color: #222;
   min-height: 100vh;

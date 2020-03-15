@@ -2,38 +2,60 @@ import React, { Component } from 'react';
 import './App.css';
 import queryString from 'query-string' ;
 
-let signInButton= {
-	width: '500px',
-  padding: '10px 20px',
-  backgroundColor: '#4C4CFF',
-  color: '#fff',
-  border: 'none',
-  'borderRadius': '2px'
+let signInButton = {
+	width: '400px',
+ padding: '10px 20px',
+	backgroundColor: 'transparent',
+ color: '#fff',
+ border: 'solid 2px',
+	borderColor: '#fff',
+	fontWeight: 'bold',
+	fontSize: '1rem',
+ marginTop: '20px',
+ borderRadius: '100px'
 };
 
 let defaultParagraph = {
 	fontSize: '0.8rem',
-	textAlign: 'left'
+	textAlign: 'left',
+	marginTop: '20px'
+};
+
+let checkbox = {
+	marginTop: '8px',
+	marginRight: '8px',
+	width: '10px',
+ 	borderRadius: '2px',
+	height: '10px',
+	border: 'solid 1.5px',
+	borderColor: '#eee',
+	display: 'inline-block',
+	position: 'relative'
+};
+
+let linkTo = {
+	color: '#fff',
+	 textDecoration: 'none'
 };
 
 let defaultStyle = {
-  color: '#fff'
+	color: '#fff'
 };
 
 /* declared variable, has a user that holds parameter (name) */
 
 class PlaylistCounter extends Component {
-  render() {
-    return (
-      <div style={{...defaultStyle, width: '40%', display: 'inline-block', fontSize: '22px'}}>
-        <h2>{this.props.playlists.length} Playlists</h2>
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div style={{...defaultStyle, width: '40%', display: 'inline-block', fontSize: '22px'}}>
+				<h2>{this.props.playlists.length} Playlists</h2>
+			</div>
+		);
+	}
 }
 
 class HoursCounter extends Component {
-  render() {
+	render() {
 		let allSongs = this.props.playlists.reduce((songs, eachPlaylist) => {
 			return songs.concat(eachPlaylist.songs)
 		}, [])
@@ -45,79 +67,79 @@ class HoursCounter extends Component {
 			<div style={{...defaultStyle, width: '40%', display: 'inline-block', fontSize: '22px'}}>
 				<h2>{Math.round(totalDuration/1000)} Hours</h2>
 			</div>
-    );
-  }
+		);
+	}
 }
-		
+
 class Filter extends Component {
-  render() {
-    return (
-      <div style={defaultStyle}>
+	render() {
+		return (
+			<div style={defaultStyle}>
 				<img alt=""/>
 				<input type="text" onKeyUp={event => 
 					this.props.onTextChange(event.target.value)}/>
-      </div>
-    );
-  }
+			</div>
+		);
+	}
 }
 
 class Playlist extends Component {
-  render() {
+	render() {
 		let playlist = this.props.playlist
-    return (
-      <div style={{...defaultStyle, width: '25%', display: 'inline-block', margin: '10px'}}>
-        <img src={playlist.imageUrl} alt="" style={{width: '160px'}}/>
-        <h3 style={{...defaultStyle, fontSize: '22px'}}>{playlist.name}</h3>
-        <ul>
+		return (
+			<div style={{...defaultStyle, width: '25%', display: 'inline-block', margin: '10px'}}>
+				<img src={playlist.imageUrl} alt="" style={{width: '160px'}}/>
+				<h3 style={{...defaultStyle, fontSize: '22px'}}>{playlist.name}</h3>
+				<ul>
 					{playlist.songs.map(song =>
 						<li>{song.name}</li>
 					)}
 				</ul>
-      </div>
-    );
-  }
+			</div>
+		);
+	}
 }
 
 /* an object literal = {} */
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
+	constructor() {
+		super();
+		this.state = {
 			serverData: {},
 			filterString: ''
 		}
-  }
+	}
 
-  componentDidMount() {
-    let parsed = queryString.parse(window.location.search);
-    let accessToken = parsed.access_token;
-    if (!accessToken)
-      return;
-    fetch('https://api.spotify.com/v1/me', {
-      headers: {'Authorization': 'Bearer ' + accessToken}
-    }).then((response) => response.json())
-
-    .then(data => this.setState({
-      user: {
-        name: data.display_name
-      }
-    }))
-
-    fetch('https://api.spotify.com/v1/me/playlists', {
-      headers: {'Authorization': 'Bearer ' + accessToken}
-    }).then(response => response.json())
+	componentDidMount() {
+		let parsed = queryString.parse(window.location.search);
+		let accessToken = parsed.access_token;
+		if (!accessToken)
+			return;
+		fetch('https://api.spotify.com/v1/me', {
+			headers: {'Authorization': 'Bearer ' + accessToken}
+		}).then((response) => response.json())
+		
+		.then(data => this.setState({
+			user: {
+				name: data.display_name
+			}
+		}))
+		
+		fetch('https://api.spotify.com/v1/me/playlists', {
+			headers: {'Authorization': 'Bearer ' + accessToken}
+		}).then(response => response.json())
     .then(playlistData => {
-      let playlists = playlistData.items
-      let trackDataPromises = playlists.map(playlist => {
-        let responsePromise = fetch(playlist.tracks.href, {
-          headers: {'Authorization': 'Bearer ' + accessToken}
-        })
-        let trackDataPromise = responsePromise
-          .then(response => response.json())
-        return trackDataPromise
-      })
-      let allTracksDataPromises = 
+			let playlists = playlistData.items
+			let trackDataPromises = playlists.map(playlist => {
+				let responsePromise = fetch(playlist.tracks.href, {
+					headers: {'Authorization': 'Bearer ' + accessToken}
+				})
+				let trackDataPromise = responsePromise
+					.then(response => response.json())
+				return trackDataPromise
+			})
+			let allTracksDataPromises = 
         Promise.all(trackDataPromises)
       let playlistsPromise = allTracksDataPromises.then(trackDatas => {
         trackDatas.forEach((trackData, i) => {
@@ -185,19 +207,24 @@ class App extends Component {
             <Playlist playlist={playlist} />
           )}
         </div> 
-				:	<div style={{marginLeft: '32%', marginRight:'32%'}}>
-						 
+				:	<div style={{...defaultStyle, marginLeft: '35%', marginRight: '35%', marginTop: '200px'}}>
+						<img alt="" style={{width: '100px', marginBottom: '30px'}} src='logo192.png'/>
 						<p style={{...defaultParagraph}}>
-							BetterPicks is a webapp that displays all your Spotify playlists.<br/>
+							BetterPicks is a web application that displays all your Spotify playlists.
 							For the app to work effectively,
-							the user should already have a Spotify account set up with desired playlist.</p> 
-						<button onClick={() => { 
+							the user should already have a Spotify account set up with desired playlists.</p> 
+						<button className="signInButton" onClick={() => { 
             window.location = window.location.href.includes('localhost') 
-              ? 'https://localhost:8888/login' 
+              ? 'https://localhost:3000/login'
               : 'https://picksbackend.herokuapp.com/login'}
         	}
-          style={{...signInButton, fontSize: '28px', marginTop: '20px'}}>Sign in with Spotify
-					</button></div>
+          style={{...signInButton}}>Sign in with Spotify
+						</button>
+						<p style={defaultParagraph}>
+							<div style={checkbox}>
+							</div>
+							By signing in you accept the <a style={linkTo} href='#'>Terms & Conditions</a></p> 
+					</div>
         } 
       </div>
     );
