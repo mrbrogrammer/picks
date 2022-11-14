@@ -158,7 +158,6 @@ class App extends Component {
       playlists: playlists.map(item => {
         return {
           name: item.name,
-          imageUrl: item.images.find(image => image.width = 60).url,
           songs: item.trackDatas.slice(0,3)
           }
     })
