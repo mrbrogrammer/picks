@@ -1,69 +1,115 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+# Picks
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Picks is a web application that displays all your Spotify playlists. For the app to work effectively, the user should already have a Spotify account set up with desired playlists.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+## Features
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Sign in to Spotify API**: Securely authenticate with your Spotify account.
+- **View your Spotify playlists**: See all your playlists, including playlist details and a preview of tracks.
+- **Search for playlists**: Instantly filter your playlists by name.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technologies Used
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- React JS
+- Spotify API
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Installation Requirements
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Node.js
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Installation
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/picks.git
+   cd picks
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm start
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Usage
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Click **Sign in with Spotify** and authorize the app.
+2. Browse your playlists and see a summary of your music.
+3. Use the search box to filter playlists by name.
 
-### Code Splitting
+---
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Configuration Options
 
-### Analyzing the Bundle Size
+- The backend authentication URL is set in the code. If you deploy your own backend, update this URL in `App.js`.
+- You may need to register your app with Spotify and set the correct redirect URI in your Spotify Developer Dashboard.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+---
 
-### Making a Progressive Web App
+## Code Structure Overview
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```
+src/
+  App.css
+  App.js
+  App.test.js
+  index.css
+  index.js
+  logo192.png
+  reportWebVitals.js
+  setupTests.js
+  components/
+    PlaylistCounter.js
+    HoursCounter.jsx
+    Filter.jsx
+```
 
-### Advanced Configuration
+---
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+## Troubleshooting
 
-### Deployment
+- **Spotify login not working:**
+  - Ensure your Spotify app credentials and redirect URI are set up correctly in the Spotify Developer Dashboard.
+  - Check that your backend authentication server is running and accessible.
+- **API errors or blank playlists:**
+  - Make sure your access token is valid and has the required scopes.
+  - Check the browser console for error messages.
+- **App not starting:**
+  - Ensure Node.js is installed and up to date.
+  - Run `npm install` to ensure all dependencies are installed.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+---
 
-### `npm run build` fails to minify
+## Contributing
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-# picks
+Contributions are welcome! To contribute:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -am 'Add new feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a pull request
+
+Please follow the existing code style and include tests where appropriate.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
