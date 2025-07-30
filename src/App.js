@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
 import queryString from 'query-string';
 import PlaylistCounter from './components/PlaylistCounter'
 import HoursCounter from './components/HoursCounter';
 import Filter from './components/Filter';
+import Playlist from './components/Playlist';
 
 
 let defaultParagraph = {
@@ -35,28 +35,6 @@ let defaultStyle = {
 	color: '#fff'
 };
 
-/* declared variable, has a user that holds parameter (name) */
-
-
-
-class Playlist extends Component {
-	render() {
-		let playlist = this.props.playlist
-		return (
-			<div style={{...defaultStyle, width: '25%', display: 'inline-block', margin: '10px'}}>
-				<img src={playlist.imageUrl} alt="" style={{width: '160px'}}/>
-				<h3 style={{...defaultStyle, fontSize: '22px'}}>{playlist.name}</h3>
-				<ul>
-					{playlist.songs.map(song =>
-						<li>{song.name}</li>
-					)}
-				</ul>
-			</div>
-		);
-	}
-}
-
-/* an object literal = {} */
 
 class App extends Component {
     constructor() {
@@ -66,6 +44,10 @@ class App extends Component {
             serverData: {},
             filterString: ''
         }
+
+        // window.location = window.location.href.includes('localhost') 
+        // ? 'http://localhost:8888/login'
+        // : 'https://mypicksbackend-5fe787abe3ab.herokuapp.com/login'
     }
 
     componentDidMount() {
@@ -73,7 +55,10 @@ class App extends Component {
         let parsed = queryString.parse(window.location.search);
         let accessToken = parsed.access_token;
         if (!accessToken)
-            return; // Not authenticated, show sign-in
+            return window.location = window.location.href.includes('localhost') 
+                    ? 'http://localhost:8888/login'
+                    : 'https://mypicksbackend-5fe787abe3ab.herokuapp.com/login';
+                     // Not authenticated, show sign-in
 
         // Fetch user profile
         fetch('https://api.spotify.com/v1/me', {
@@ -91,6 +76,9 @@ class App extends Component {
         }).then(response => response.json())
         .then(playlistData => {
             let playlists = playlistData.items
+
+            console.log(playlists);
+
             // For each playlist, fetch its tracks
             let trackDataPromises = playlists.map(playlist => {
                 let responsePromise = fetch(playlist.tracks.href, {
@@ -121,6 +109,7 @@ class App extends Component {
                 // Only keep the first 3 tracks for each playlist
                 return {
                     name: item.name,
+                    img: item.images ? item.images[0] : '',
                     songs: item.trackDatas.slice(0,3)
                 }
             })
@@ -157,7 +146,9 @@ class App extends Component {
                             <Playlist playlist={playlist} />
                         )}
                     </div> :
-                    // Not authenticated: show sign-in
+                    <div></div>
+
+                    /* Not authenticated: show sign-in
                     <div style={{...defaultStyle, width: '100%', contentAlign: 'center', marginTop: '30px'}}>
                         <img alt="" style={{width: '100px', marginBottom: '30px'}} src='logo192.png'/>
                         <div style={{...defaultParagraph}}>
@@ -167,14 +158,15 @@ class App extends Component {
                                 the user should already have a Spotify account set up with desired playlists.
                             </p> 
                         </div>
-                        <button className="signInButton" onClick={() => {window.location = 'https://mypicksbackend-5fe787abe3ab.herokuapp.com/login'}}>
+                        <button className="signInButton" onClick={() => {
+        
                             Sign in with Spotify
                         </button>
                         <p style={defaultParagraph}>
                             <div style={checkbox}></div>
                             By signing in you accept the <a style={linkTo} href='#'>Terms & Conditions</a>
                         </p> 
-                    </div>
+                    </div> */
                 } 
             </div>
         );
