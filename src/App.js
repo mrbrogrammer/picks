@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
+import 'reset-css/reset.css';
+
 import PlaylistCounter from './components/PlaylistCounter'
 import HoursCounter from './components/HoursCounter';
 import Filter from './components/Filter';
@@ -122,8 +124,10 @@ class App extends Component {
             this.state.user && 
             this.state.playlists 
             ? this.state.playlists.filter(playlist => {
+                // Check if playlist name or any song name matches the filter string
                 let matchesPlaylist = playlist.name.toLowerCase().includes(
                     this.state.filterString.toLowerCase())
+                // Check if any song in the playlist matches the filter string
                 let matchesSong = playlist.songs.find(song => song.name.toLowerCase()
                     .includes(this.state.filterString.toLowerCase()))
                 return matchesPlaylist || matchesSong
@@ -134,7 +138,11 @@ class App extends Component {
                 {this.state.user ?
                     // Authenticated: show playlists and filter
                     <div>
-                        <h1 style={{...defaultStyle, fontSize: '54px'}}>
+                        <h1 style={{
+                            ...defaultStyle,
+                            fontSize: '54px',
+                            marginTop: '5px',
+                        }}>
                             {this.state.user.name}'s Playlists
                         </h1>
                         <PlaylistCounter playlists={playlistToRender}/>
@@ -142,8 +150,8 @@ class App extends Component {
                         <Filter onTextChange={text => {
                             this.setState({filterString: text})
                         }}/>			
-                        {playlistToRender.map(playlist =>
-                            <Playlist playlist={playlist} />
+                        {playlistToRender.map((playlist, i) =>
+                            <Playlist playlist={playlist} index={i} />
                         )}
                     </div> :
                     <div></div>

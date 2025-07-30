@@ -27,14 +27,6 @@
 import React, { Component } from 'react';
 import '../App.css';
 
-
-
-// Inline style for the counter text
-let defaultStyle = {
-    color: '#fff'
-};
-
-
 class HoursCounter extends Component {
     render() {
         // Defensive: If playlists is not provided, default to empty array to avoid errors
@@ -48,9 +40,22 @@ class HoursCounter extends Component {
             return sum + eachSong.duration
         }, 0)
 
+        let totalDurationHours = Math.round(totalDuration / 60); // Convert seconds to hours
+        let isTooLow = totalDurationHours < 1;
+
+        let hoursCounterStyle = {
+            width: '40%',
+            display: 'inline-block',
+            fontSize: '22px',
+            color: isTooLow ? 'red' : 'white', // Red if less than 1 hour
+            lineHeight: '30px',
+            marginBottom: '10px',
+            fontWeight: isTooLow ? 'bold' : 'normal'
+        }
+
         return (
-            <div style={{...defaultStyle, width: '40%', display: 'inline-block', fontSize: '22px'}}>
-                <h2>{Math.round(totalDuration/1000)} Hours</h2>
+            <div style={hoursCounterStyle}>
+                <h2>{Math.round(totalDuration / 1000)} Hours</h2>
             </div>
         );
     }

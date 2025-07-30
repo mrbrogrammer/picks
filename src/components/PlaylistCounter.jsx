@@ -35,8 +35,17 @@ class PlaylistCounter extends Component {
     render() {
         // Defensive: If playlists is not provided, default to empty array to avoid errors
         const playlists = Array.isArray(this.props.playlists) ? this.props.playlists : [];
+        let PlaylistCounterStyle = {
+            ...defaultStyle,
+            width: '40%',
+            display: 'inline-block',
+            fontSize: '22px',
+            lineHeight: '30px',
+            marginBottom: '10px'
+        };
+
         return (
-            <div style={{...defaultStyle, width: '40%', display: 'inline-block', fontSize: '22px'}}>
+            <div style={PlaylistCounterStyle}>
                 <h2>{playlists.length} Playlists</h2>
             </div>
         );
