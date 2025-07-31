@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test hoursCounter Component Should render correctly with playlists containing songs 1`] = `
+exports[`Test playlistCounter Component Should render correctly with no playlists 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
       <div
-        style="width: 40%; display: inline-block; font-size: 22px; color: white; line-height: 30px; margin-bottom: 10px; font-weight: normal;"
+        style="color: rgb(255, 255, 255); width: 40%; display: inline-block; font-size: 22px; line-height: 30px; margin-bottom: 10px;"
       >
         <h2>
-          13
-           Hours
+          0
+           Playlists
         </h2>
       </div>
     </div>
   </body>,
   "container": <div>
     <div
-      style="width: 40%; display: inline-block; font-size: 22px; color: white; line-height: 30px; margin-bottom: 10px; font-weight: normal;"
+      style="color: rgb(255, 255, 255); width: 40%; display: inline-block; font-size: 22px; line-height: 30px; margin-bottom: 10px;"
     >
       <h2>
-        13
-         Hours
+        0
+         Playlists
       </h2>
     </div>
   </div>,
@@ -79,28 +79,28 @@ Object {
 }
 `;
 
-exports[`Test hoursCounter Component Shouold render correctly with no playlists 1`] = `
+exports[`Test playlistCounter Component Should render correctly with playlists 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
       <div
-        style="width: 40%; display: inline-block; font-size: 22px; color: red; line-height: 30px; margin-bottom: 10px; font-weight: bold;"
+        style="color: rgb(255, 255, 255); width: 40%; display: inline-block; font-size: 22px; line-height: 30px; margin-bottom: 10px;"
       >
         <h2>
-          0
-           Hours
+          2
+           Playlists
         </h2>
       </div>
     </div>
   </body>,
   "container": <div>
     <div
-      style="width: 40%; display: inline-block; font-size: 22px; color: red; line-height: 30px; margin-bottom: 10px; font-weight: bold;"
+      style="color: rgb(255, 255, 255); width: 40%; display: inline-block; font-size: 22px; line-height: 30px; margin-bottom: 10px;"
     >
       <h2>
-        0
-         Hours
+        2
+         Playlists
       </h2>
     </div>
   </div>,

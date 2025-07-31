@@ -18,8 +18,8 @@ class Playlist extends Component {
                 <img src={playlist.img ? playlist.img.url : ''} alt="" style={{width: '60px'}}/>
                 <h3 style={{...defaultStyle, fontSize: '22px'}}>{playlist.name}</h3>
                 <ul style={{marginTop: '10px', fontWeight: 'bold'}}>
-                    {playlist.songs.map(song =>
-                        <li style={{paddingTop: '2px'}}>{song.name}</li>
+                    {playlist.songs.map((song, index) =>
+                        <li key={song.name ? song.name : index} style={{paddingTop: '2px'}}>{song.name}</li>
                     )}
                 </ul>
             </div>
